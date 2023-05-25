@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <regex>
 #include "Thread.hpp"
 
 using namespace std;
