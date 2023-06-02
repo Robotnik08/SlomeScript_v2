@@ -5,18 +5,22 @@
 
 using namespace std;
 
+class Thread;
 class Thread {
     public:
         string fullCode = "";
         vector<unique_ptr<Code>> codeList;
-        Thread (char* arg[]) {
+        vector<unique_ptr<Scope>> scopes;
+        Thread(char* arg[]) {
             this->fullCode = getFullCode(arg);
             this->codeList = returnCodeList(this->fullCode);
-            cout << "Code list: " << endl;
-            for (int i = 0; i < this->codeList.size(); i++) {
-                cout << "Line " << i << ": " << endl;
-                cout << this->codeList[i]->LineOfCode << endl;
+
+            vector<unique_ptr<Code>> copiedCodeList;
+            for (auto& code : this->codeList) {
+                copiedCodeList.push_back(move(code));
             }
+
+            this->scopes.push_back(make_unique<Scope>(move(copiedCodeList)));
         }
         string getFullCode (char* arg[]) {
             string fullCode = "";
@@ -30,5 +34,8 @@ class Thread {
                 fullCode += line + "\n";
             }
             return fullCode;
+        }
+        void ExecuteLine(string line) {
+            cout << line << endl;
         }
 };

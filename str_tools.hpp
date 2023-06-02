@@ -4,13 +4,26 @@
 
 using namespace std;
 
-string str_full_parentheses(string input) {
+string str_full_parentheses(string input, int pos = 0, char parenthesesChar = '(', char endParenthesesChar = ')') {
     string result;
-    int pos = 0;
     int parentheses = 0;
     bool foundParentheses = false;
+    char str_char = '"';
+    bool inString = false;
     while (pos < input.size()) {
         char currentChar = input[pos++];
+        if (currentChar == '"' || currentChar == '\'' || currentChar == '`' ) {
+            if (inString) {
+                if (str_char == currentChar && input[pos - 2] != '\\') {
+                    inString = false;
+                }
+            } else {
+                inString = true;
+                str_char = currentChar;
+            }
+            result += currentChar;
+            continue;
+        }
         if (foundParentheses) {
             result += currentChar;
             if (currentChar == ')') {
