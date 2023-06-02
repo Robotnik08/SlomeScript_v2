@@ -26,20 +26,20 @@ string str_full_parentheses(string input, int pos = 0, char parenthesesChar = '(
         }
         if (foundParentheses) {
             result += currentChar;
-            if (currentChar == ')') {
+            if (currentChar == endParenthesesChar) {
                 parentheses--;
                 if (!parentheses) {
                     return result;
                 }
-            } else if (currentChar == '(') {
+            } else if (currentChar == parenthesesChar) {
                 parentheses++;
             }
-        } else if (currentChar == '(') {
+        } else if (currentChar == parenthesesChar) {
             result += currentChar;
             foundParentheses = true;
         }
     }
-    return result;
+    return NULL;
 }
 vector<string> str_split (string input, string delimeter) {
     vector<string> result;

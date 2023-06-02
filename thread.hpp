@@ -2,8 +2,10 @@
 #include <string>
 #include <fstream>
 #include "code.hpp"
+#include "error.hpp"
 
 using namespace std;
+using namespace err;
 
 class Thread;
 class Thread {
