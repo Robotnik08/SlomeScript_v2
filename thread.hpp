@@ -7,12 +7,14 @@
 using namespace std;
 using namespace err;
 
+class Parser;
 class Thread;
 class Thread {
     public:
         string fullCode = "";
         vector<unique_ptr<Code>> codeList;
         vector<unique_ptr<Scope>> scopes;
+        unique_ptr<Parser> parser;
         Thread(char* arg[]) {
             this->fullCode = getFullCode(arg);
             this->codeList = returnCodeList(this->fullCode);
@@ -23,10 +25,11 @@ class Thread {
             }
 
             this->scopes.push_back(make_unique<Scope>(move(copiedCodeList)));
+            this->parser = make_unique<Parser>(this);
         }
         string getFullCode (char* arg[]) {
             string fullCode = "";
-            ifstream file(arg[1]);
+            ifstream file("main.slome");
             if (!file.good()) {
                 cout << "File not found." << endl;
                 exit(1);
@@ -41,3 +44,4 @@ class Thread {
             cout << line << endl;
         }
 };
+#include "eval.hpp"

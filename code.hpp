@@ -13,12 +13,24 @@ class Code {
     public:
         vector<string> LineOfCode;
         int location = 0;
+        vector<int> locOfEachWord;
         Code (string str, int loc) {
             this->location = loc;
-            vector<string> splitLine = str_split(str, " ");
+            this->locOfEachWord.push_back(0);
+            vector<string> splitLine = str_split(trim_string(str), " ");
             for (int i = 0; i < splitLine.size(); i++) {
-                this->LineOfCode.push_back(splitLine[i]);
+                if (splitLine[i][0]) {
+                    this->LineOfCode.push_back(splitLine[i]);
+                    this->locOfEachWord.push_back(this->locOfEachWord[this->locOfEachWord.size()-1] + splitLine[i].length());
+                } 
             }
+        }
+        string getLineOfCode () {
+            string result = "";
+            for (int i = 0; i < this->LineOfCode.size(); i++) {
+                result += this->LineOfCode[i] + " ";
+            }
+            return result;
         }
 };
 class Scope {
