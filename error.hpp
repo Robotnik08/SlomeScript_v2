@@ -4,7 +4,7 @@
 using namespace std;
 
 namespace err {
-    const int UNKNOWN_ERROR = -1;
+    const int UNKNOWN_ERROR = 0;
     
     const int SYNTAX_ERROR = 1;
 

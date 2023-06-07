@@ -4,15 +4,17 @@
 
 using namespace std;
 
+char getEscapeChar (char in);
+
 string str_full_parentheses(string input, int pos = 0, char parenthesesChar = '(', char endParenthesesChar = ')') {
-    string result;
+    string result = "";
     int parentheses = 0;
     bool foundParentheses = false;
     char str_char = '"';
     bool inString = false;
-    while (pos < input.size()) {
+    while (pos < input.size()-1) {
         char currentChar = input[pos++];
-        if (currentChar == '"' || currentChar == '\'' || currentChar == '`' ) {
+        if (currentChar == '"' || currentChar == '\'') {
             if (inString) {
                 if (str_char == currentChar && input[pos - 2] != '\\') {
                     inString = false;
@@ -37,9 +39,10 @@ string str_full_parentheses(string input, int pos = 0, char parenthesesChar = '(
         } else if (currentChar == parenthesesChar) {
             result += currentChar;
             foundParentheses = true;
+            parentheses++;
         }
     }
-    return NULL;
+    return "";
 }
 string getFullString (string input, int pos = 0, char strChar = '"') {
     string result;
@@ -47,10 +50,12 @@ string getFullString (string input, int pos = 0, char strChar = '"') {
     while (pos < input.size()) {
         char currentChar = input[pos++];
         if (foundStr) {
-            result += currentChar;
-            if (currentChar == strChar && input[pos - 2] != '\\') {
-                return result;
+            while (currentChar == '\\') {
+                result += getEscapeChar(input[pos++]);
+                currentChar = input[pos++];
             }
+            result += currentChar;
+            if (currentChar == strChar) return result;
         } else if (currentChar == strChar) {
             result += currentChar;
             foundStr = true;
@@ -97,4 +102,72 @@ string str_trim (string input, int amount = 1) {
         result += input[i];
     }
     return result;
+}
+pair<char, int> seekNextChar (string input, int start_pos = 0) {
+    int pos = start_pos;
+    pair <char, int> result;
+    while (pos < input.size()) {
+        if (input[pos] != '\n' && input[pos] != ' ') {
+            return pair<char, int>(input[pos], pos);
+        }
+        pos++;
+    }
+    return pair<char, int>(' ', NULL);
+}
+vector<string> splitIntoParameters (string str) {
+    vector<string> result;
+    int pos = 0;
+    string add = "";
+    bool inString = false;
+    char str_char = '"';
+    while (pos < str.size()) {
+        add += str[pos++];
+        if (!inString) {
+            if (str[pos] == ',') {
+                result.push_back(add);
+                add = "";
+                pos++;
+                while (str[pos] == ' ') {
+                    pos++;
+                }
+            } else if (str[pos-1] == '"' || str[pos-1] == '\'') {
+                inString = false;
+                str_char = str[pos-1];
+            }
+        } else {
+            if (str[pos-1] == str_char && str[pos - 2] != '\\') {
+                inString = true;
+            }
+        }
+    }
+    if (add.size()) result.push_back(add);
+    return result;
+}
+char getEscapeChar (char in) {
+    switch (in) {
+        case 'n':
+            return '\n';
+        case 't':
+            return '\t';
+        case 'r':
+            return '\r';
+        case 'b':
+            return '\b';
+        case 'a':
+            return '\a';
+        case 'v':
+            return '\v';
+        case 'f':
+            return '\f';
+        case '\\':
+            return '\\';
+        case '\'':
+            return '\'';
+        case '"':
+            return '"';
+        case '0':
+            return '\0';
+        default:
+            return in;
+    }
 }
