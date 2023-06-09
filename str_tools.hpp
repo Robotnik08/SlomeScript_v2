@@ -2,12 +2,11 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
 
 char getEscapeChar (char in);
 
-string str_full_parentheses(string input, int pos = 0, char parenthesesChar = '(', char endParenthesesChar = ')') {
-    string result = "";
+std::string str_full_parentheses(std::string input, int pos = 0, char parenthesesChar = '(', char endParenthesesChar = ')') {
+    std::string result = "";
     int parentheses = 0;
     bool foundParentheses = false;
     char str_char = '"';
@@ -44,8 +43,8 @@ string str_full_parentheses(string input, int pos = 0, char parenthesesChar = '(
     }
     return "";
 }
-string getFullString (string input, int pos = 0, char strChar = '"') {
-    string result;
+std::string getFullString (std::string input, int pos = 0, char strChar = '"') {
+    std::string result;
     bool foundStr = false;
     while (pos < input.size()) {
         char currentChar = input[pos++];
@@ -63,11 +62,11 @@ string getFullString (string input, int pos = 0, char strChar = '"') {
     }
     return NULL;
 }
-vector<string> str_split (string input, string delimeter) {
-    vector<string> result;
+std::vector<std::string> str_split (std::string input, std::string delimeter) {
+    std::vector<std::string> result;
     int pos = 0;
     int delimeterPos = 0;
-    string currentString = "";
+    std::string currentString = "";
     while (pos < input.size()) {
         char currentChar = input[pos++];
         if (currentChar == delimeter[delimeterPos]) {
@@ -85,39 +84,39 @@ vector<string> str_split (string input, string delimeter) {
     if (currentString.size()) result.push_back(currentString);
     return result;
 }
-string trim_string(string str, string target = " \n") {
+std::string trim_string(std::string str, std::string target = " \n") {
     size_t start = 0;
     size_t end = str.length();
-    while (start < end && target.find(str[start]) != string::npos) {
+    while (start < end && target.find(str[start]) != std::string::npos) {
         ++start;
     }
-    while (end > start && target.find(str[end-1]) != string::npos) {
+    while (end > start && target.find(str[end-1]) != std::string::npos) {
         --end;
     }
     return str.substr(start, end - start);
 }
-string str_trim (string input, int amount = 1) {
-    string result = "";
+std::string str_trim (std::string input, int amount = 1) {
+    std::string result = "";
     for (int i = amount; i < input.length() - amount; i++) {
         result += input[i];
     }
     return result;
 }
-pair<char, int> seekNextChar (string input, int start_pos = 0) {
+std::pair<char, int> seekNextChar (std::string input, int start_pos = 0) {
     int pos = start_pos;
-    pair <char, int> result;
+    std::pair <char, int> result;
     while (pos < input.size()) {
         if (input[pos] != '\n' && input[pos] != ' ') {
-            return pair<char, int>(input[pos], pos);
+            return std::pair<char, int>(input[pos], pos);
         }
         pos++;
     }
-    return pair<char, int>(' ', NULL);
+    return std::pair<char, int>(' ', NULL);
 }
-vector<string> splitIntoParameters (string str) {
-    vector<string> result;
+std::vector<std::string> splitIntoParameters (std::string str) {
+    std::vector<std::string> result;
     int pos = 0;
-    string add = "";
+    std::string add = "";
     bool inString = false;
     char str_char = '"';
     while (pos < str.size()) {

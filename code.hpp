@@ -4,20 +4,19 @@
 #include <any>
 #include "str_tools.hpp"
 
-using namespace std;
 
 class Code;
 class Scope;
 template <typename T> class Variable;
 class Code {
     public:
-        vector<string> LineOfCode;
+        std::vector<std::string> LineOfCode;
         int location = 0;
-        vector<int> locOfEachWord;
-        Code (string str, int loc) {
+        std::vector<int> locOfEachWord;
+        Code (std::string str, int loc) {
             this->location = loc;
             this->locOfEachWord.push_back(0);
-            vector<string> splitLine = str_split(trim_string(str), " ");
+            std::vector<std::string> splitLine = str_split(trim_string(str), " ");
             for (int i = 0; i < splitLine.size(); i++) {
                 if (splitLine[i][0]) {
                     this->LineOfCode.push_back(splitLine[i]);
@@ -25,8 +24,8 @@ class Code {
                 } 
             }
         }
-        string getLineOfCode () {
-            string result = "";
+        std::string getLineOfCode () {
+            std::string result = "";
             for (int i = 0; i < this->LineOfCode.size(); i++) {
                 result += this->LineOfCode[i] + " ";
             }
@@ -35,28 +34,28 @@ class Code {
 };
 class Scope {
     public:
-        vector<unique_ptr<Code>> codeList;
+        std::vector<std::unique_ptr<Code>> codeList;
         int runnerLoc = 0;
-        Scope (vector<unique_ptr<Code>> codeList) {
-            this->codeList = move(codeList);
+        Scope (std::vector<std::unique_ptr<Code>> codeList) {
+            this->codeList = std::move(codeList);
         }
 };
 template <typename T> class Variable {
     public:
-        string name;
+        std::string name;
         T value;
-        Variable (string name, T value) {
+        Variable (std::string name, T value) {
             this->name = name;
             this->value = value;
         }
 };
-vector<unique_ptr<Code>> returnCodeList (string fullCode) {
-    vector<unique_ptr<Code>> codeList;
-    string LineOfCode = "";
+std::vector<std::unique_ptr<Code>> returnCodeList (std::string fullCode) {
+    std::vector<std::unique_ptr<Code>> codeList;
+    std::string LineOfCode = "";
     int lineCount = 1;
     for (int i = 0; i < fullCode.length(); i++) {
         if (fullCode[i] == ';') {
-            codeList.push_back(make_unique<Code>(LineOfCode, lineCount++));
+            codeList.push_back(std::make_unique<Code>(LineOfCode, lineCount++));
             LineOfCode = "";
         } else if (fullCode[i] == '\n') {
             LineOfCode += ' ';
@@ -64,6 +63,6 @@ vector<unique_ptr<Code>> returnCodeList (string fullCode) {
             LineOfCode += fullCode[i];
         }
     }
-    if (LineOfCode.length()) codeList.push_back(make_unique<Code>(LineOfCode, lineCount++));
+    if (LineOfCode.length()) codeList.push_back(std::make_unique<Code>(LineOfCode, lineCount++));
     return codeList;
 };

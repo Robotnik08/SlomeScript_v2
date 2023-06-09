@@ -4,44 +4,41 @@
 #include "code.hpp"
 #include "error.hpp"
 
-using namespace std;
-using namespace err;
-
 class Parser;
 class Thread;
 class Thread {
     public:
-        string fullCode = "";
-        vector<unique_ptr<Code>> codeList;
-        vector<unique_ptr<Scope>> scopes;
-        unique_ptr<Parser> parser;
+        std::string fullCode = "";
+        std::vector<std::unique_ptr<Code>> codeList;
+        std::vector<std::unique_ptr<Scope>> scopes;
+        std::unique_ptr<Parser> parser;
         Thread(char* arg[]) {
             this->fullCode = getFullCode(arg);
             this->codeList = returnCodeList(this->fullCode);
 
-            vector<unique_ptr<Code>> copiedCodeList;
+            std::vector<std::unique_ptr<Code>> copiedCodeList;
             for (auto& code : this->codeList) {
                 copiedCodeList.push_back(move(code));
             }
 
-            this->scopes.push_back(make_unique<Scope>(move(copiedCodeList)));
-            this->parser = make_unique<Parser>(this);
+            this->scopes.push_back(std::make_unique<Scope>(move(copiedCodeList)));
+            this->parser = std::make_unique<Parser>(this);
         }
-        string getFullCode (char* arg[]) {
-            string fullCode = "";
-            ifstream file("main.slome");
+        std::string getFullCode (char* arg[]) {
+            std::string fullCode = "";
+            std::ifstream file("main.slome");
             if (!file.good()) {
-                cout << "File not found." << endl;
+                std::cout << "File not found.\n";
                 exit(1);
             }
-            string line;
+            std::string line;
             while (getline(file, line)) {
                 fullCode += line + "\n";
             }
             return fullCode;
         }
-        void ExecuteLine(string line) {
-            cout << line << endl;
+        void ExecuteLine(std::string line) {
+            std::cout << line << '\n';
         }
 };
 #include "eval.hpp"

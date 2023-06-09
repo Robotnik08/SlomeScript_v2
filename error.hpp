@@ -1,19 +1,18 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
 
 namespace err {
-    const int UNKNOWN_ERROR = 0;
+    const int UNKNOWN_ERROR = -1;
     
     const int SYNTAX_ERROR = 1;
 
-    string errorMessages[] = {
+    std::string errorMessages[] = {
         "Unknown Error",
         "Syntax Error"
     };
     void printError (int line, int errCode = -1) {
-        cout << endl << line << ": " << errorMessages[errCode] << endl;
+        std::cout << '\n' << line << ": " << errorMessages[std::max(errCode, 0)] << '\n';
         exit(errCode);
     }
 }
